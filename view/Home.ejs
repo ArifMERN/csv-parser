@@ -1,0 +1,19 @@
+<section class="uploader">
+  <h1>CSV Uploader</h1>
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <!-- <input type="file" name="avatar" /> -->
+    <label class="custom-file-upload">
+      <input type="file" name="avatar" />
+      <img src="uploader.png" alt="upload" class="file-upload-image" />
+    </label>
+    <input type="submit" value="Add CSV" class="upload__button" />
+  </form>
+  <div>
+    <h3>List of Files</h3>
+    <ol>
+      <% for (csv of file) { %>
+      <li><a href="<%= csv %>"><%= csv %></a></li>
+      <% } %>
+    </ol>
+  </div>
+</section>

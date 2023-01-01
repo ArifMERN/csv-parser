@@ -1,0 +1,80 @@
+<section>
+  <div>
+    <div class="search-box">
+      <input type="text" placeholder="search CSV file" id="search" />
+      <button onclick="searchFun()">Search</button>
+    </div>
+    <div class="tableWrapper">
+      <table id="table"></table>
+    </div>
+    <footer id="footer">
+      <a href="?s=1&e=15"><button>1</button></a>
+      <a href="?s=16&e=30"><button>2</button></a>
+      <a href="?s=31&e=45"><button>3</button></a>
+      <a href="?s=45&e=60"><button>Next</button></a>
+    </footer>
+  </div>
+  <script>
+    let data = "<%= data%>";
+    let keys = "<%= keys%>";
+    keys = keys.split(",");
+    data = data.split(",");
+    let values = [];
+    for (var i = 0; i < data.length; i = i + keys.length) {
+      var val = {};
+      var k = 0;
+      for (var j = i; j < i + keys.length; j++) {
+        val[keys[k]] = data[j];
+        k++;
+      }
+      values.push(val);
+    }
+
+    const table = document.getElementById("table");
+
+    const tr = document.createElement("tr");
+    for (var key of Object.keys(values[0])) {
+      const td = document.createElement("th");
+      td.innerHTML = key;
+      tr.appendChild(td);
+    }
+    table.appendChild(tr);
+
+    for (var i = 1; i < values.length; i++) {
+      const tr1 = document.createElement("tr");
+      for (var val of Object.values(values[i])) {
+        const td1 = document.createElement("td");
+        td1.innerHTML = val;
+        tr1.appendChild(td1);
+      }
+      table.appendChild(tr1);
+    }
+
+    // search on button click
+    const searchFun = () => {
+      console.log("started");
+      let filter = document.getElementById("search").value.toUpperCase();
+      let table = document.getElementById("table");
+      let tr = table.getElementsByTagName("tr");
+      for (var i = 1; i < tr.length; i++) {
+        console.log(tr.length);
+        let td = tr[i].getElementsByTagName("td");
+        var tds = [];
+        for (var j = 0; j < td.length; j++) {
+          if (td[j])
+            tds.push(
+              td[j].textContent.toUpperCase() || td[j].innerHTML.toUpperCase()
+            );
+        }
+        if (tds) {
+          if (tds.some((td) => td.indexOf(filter) > -1)) {
+            tr[i].style.display = "";
+            console.log(tr[i]);
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    };
+  </script>
+</section>
